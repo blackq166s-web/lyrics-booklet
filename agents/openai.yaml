@@ -1,0 +1,6 @@
+interface:
+  display_name: "Lyrics Booklet"
+  short_description: "Make multilingual lyric PDFs with Typst"
+  default_prompt: "Use $lyrics-booklet to create a print-ready multilingual lyric booklet from my lyric data."
+policy:
+  allow_implicit_invocation: true

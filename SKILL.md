@@ -5,18 +5,17 @@ description: Generate printer-ready A4 lyric booklets, album inserts, translatio
 
 # Lyrics Booklet
 
-Use this skill to turn structured lyric or poetry text into a print-ready A4 PDF. The generator is useful for album inserts, bilingual lyric sheets, translation collections, listening-club handouts, and small zines.
+Use this skill to turn structured lyric or poetry text into a print-ready A4 PDF. The generator is useful for album inserts, bilingual lyric sheets, translation collections, listening-club handouts, and small zines. It has first-class bundled font coverage for Chinese, Japanese, Korean, English, and Spanish.
 
 ## Workflow
 
 1. Confirm the user has the lyrics/translations or rights to use them.
 2. Create or update a Python data file containing `BOOKLET`, `LANGUAGES`, and `TRACKS`.
 3. Read `references/lyrics-format.md` when building or validating the data file.
-4. Read `references/lyrics-sources.md` when fetching lyrics from web APIs — covers LRCLIB, syncedlyrics, and data assembly pitfalls.
-5. Read `references/fonts.md` when the task involves non-Latin scripts, missing glyphs, or portable GitHub packaging.
-6. Choose a visual preset from `references/style-guide.md`.
-7. Run `scripts/generate_booklet.py`.
-8. If Typst or fonts are missing, generate `.typ` with `--no-pdf --typst-out output.typ` and tell the user what dependency is missing.
+4. Read `references/fonts.md` when the task involves CJK scripts, missing glyphs, or portable GitHub packaging.
+5. Choose a visual preset from `references/style-guide.md`.
+6. Run `scripts/generate_booklet.py`.
+7. If Typst or fonts are missing, generate `.typ` with `--no-pdf --typst-out output.typ` and tell the user what dependency is missing.
 
 ## Quick Command
 
@@ -95,17 +94,13 @@ TRACKS = [
 
 ## Layout Choices
 
-- Use `--preset gallery` for a polished editorial booklet. **Preferred for black & white laser printing** — white background, clean layout, no toner-heavy dark fills.
-- Use `--preset minimal` for dense, black-and-white laser printing. Most toner-efficient; smallest file size.
-- Use `--preset noir` for a dramatic dark cover — **only for screen viewing or color printing**. The dark background wastes toner and looks muddy on B&W laser printers. When the user mentions laser/black-and-white/打印, default to `gallery` or `minimal` instead.
+- Use `--preset gallery` for a polished editorial booklet.
+- Use `--preset minimal` for dense, black-and-white laser printing.
+- Use `--preset noir` for a dramatic cover with a clean white interior.
 - Use `--preset zine` for indie/demo booklet styling.
 - Use `--line-layout columns` for 1 to 3 languages.
 - Use `--line-layout stacked` for 4+ languages or long translations.
 - Use `--languages en,zh,ja` to reorder or export only selected languages.
-
-### ⚠️ Black & White Printing Rule
-
-When the user says 打印, laser, 黑白, or A4 print — **always use a white-background preset** (`gallery` or `minimal`). Never use `noir`. Dark backgrounds on B&W laser printers produce solid black pages that waste toner, smear, and are unreadable.
 
 ## Font Guidance
 
@@ -114,6 +109,7 @@ When the user says 打印, laser, 黑白, or A4 print — **always use a white-b
 - Use `scripts/download_fonts.py --set core --set cjk-sc` for Chinese-first projects.
 - Use `scripts/download_fonts.py --set core --set cjk` for Simplified Chinese, Traditional Chinese, Japanese, and Korean.
 - Use Google Fonts family names in data files, such as `Noto Sans SC`, `Noto Sans TC`, `Noto Sans JP`, and `Noto Sans KR`.
+- Use `Inter` for English and Spanish.
 - Pass custom font folders with repeated `--font-dir` flags when the user has their own brand fonts.
 - Keep expressive fonts for covers and readable fonts for lyric bodies.
 
