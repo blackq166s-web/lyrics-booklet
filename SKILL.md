@@ -16,7 +16,6 @@ Typst's professional typesetting engine.
    pip install typst --break-system-packages  # one-time
    python3 scripts/generate_booklet.py data.py \
      --font-dir /path/to/fonts \
-     --font-name "Noto Serif CJK SC" \
      --album-title "ALBUM NAME" \
      --artist "Artist" \
      --label "Label · 2024" \
@@ -42,20 +41,48 @@ TRACKS = [
 
 ## Font Requirements
 
-A CJK serif font is required for proper Chinese rendering. Common options:
+| Element | Font | Style | Size |
+|---------|------|-------|------|
+| Cover title | **Playfair Display** (decorative serif) | Bold | 34pt |
+| English lyrics | **Inter** (geometric sans) | Italic | 12pt |
+| Chinese lyrics | **Noto Sans CJK SC / 思源黑体** | Regular | 11pt |
+| Song titles | **Inter** | Bold | 20pt |
+| Section labels | **Noto Sans CJK SC** | Light (luma 110) | 7pt |
 
-- **Noto Serif CJK SC**: Install via `apt install fonts-noto-cjk` or download OTF/TTF
-- **Source Han Serif**: Adobe's open-source CJK serif
-- Any system font supporting both Latin and CJK characters
+### Font Installation
+
+```bash
+# CJK fonts (Required)
+apt install fonts-noto-cjk
+
+# English fonts — download TTF/OTF from Google Fonts or other sources:
+#  - Inter: https://fonts.google.com/specimen/Inter
+#  - Playfair Display: https://fonts.google.com/specimen/Playfair+Display
+```
+
+Place all .ttf/.otf files in a single directory and pass `--font-dir /path/to/fonts`.
 
 To extract SC (Simplified Chinese) from .ttc collections:
 ```python
 from fontTools.ttLib import TTCollection
-tc = TTCollection('NotoSerifCJK-Regular.ttc')
+tc = TTCollection('NotoSansCJK-Regular.ttc')
 for font in tc:
     if 'SC' in font['name'].getDebugName(1):
-        font.save('NotoSerifCJKsc-Regular.ttf')
+        font.save('NotoSansCJKsc-Regular.ttf')
 ```
+
+## Typographic Parameters
+
+| Parameter | Value | Notes |
+|-----------|-------|-------|
+| Page | A4 (210×297mm) | Portrait |
+| Left margin | 16mm | Binding side |
+| Right margin | 12mm | |
+| Top/Bottom margin | 14mm | |
+| Line spacing (within lyric) | `leading: 0.6em` | Tight — wrapped lines stay together |
+| Line spacing (between lines) | `gutter: 5mm` | Wide — clear separation between different lyrics |
+| Colors | Black text on white background | Laser-printer optimized |
+| Page numbering | Centered footer, 7pt | |
 
 ## Customization
 
@@ -63,6 +90,9 @@ All parameters are CLI flags:
 
 | Flag | Default | Description |
 |------|---------|-------------|
+| `--en-font` | Inter | English body font |
+| `--zh-font` | Noto Sans CJK SC | Chinese body font |
+| `--cover-font` | Playfair Display | Cover title decorative font |
 | `--en-size` | 12pt | English lyric font size |
 | `--zh-size` | 11pt | Chinese lyric font size |
 | `--title-size` | 20pt | Song title size |
@@ -70,7 +100,10 @@ All parameters are CLI flags:
 | `--margin-right` | 12mm | Right margin |
 | `--font-dir` | /usr/share/fonts | Font search path |
 | `--album-title` | LYRICS | Cover title |
+| `--album-subtitle` | 中英对照歌词集 | Cover subtitle |
 | `--artist` | Unknown | Artist name |
+| `--label` | (empty) | Label & year on cover (", · 2024") |
+| `--output` / `-o` | lyrics_booklet.pdf | Output PDF path |
 
 ## Output
 
@@ -85,4 +118,9 @@ All parameters are CLI flags:
 
 - Python 3.8+
 - `typst` (pip package, includes native compiler ~25MB)
-- CJK serif font (Noto Serif CJK SC recommended)
+- `brotli` (pip, required for woff2→ttf font extraction)
+- `fonttools` (pip, required for .ttc font extraction)
+- Fonts:
+  - Inter (English body) — download TTF from Google Fonts
+  - Playfair Display (cover title) — download TTF from Google Fonts
+  - Noto Sans CJK SC / 思源黑体 (Chinese) — `apt install fonts-noto-cjk`

@@ -26,6 +26,7 @@ def esc(s):
     return s.replace("\\", "\\\\").replace("#", "\\#")
 
 def build_typst(tracks, font_dir, en_font="Inter", zh_font="Noto Sans CJK SC",
+                cover_font="Playfair Display",
                 en_size="12pt", zh_size="11pt", title_size="20pt",
                 en_style='"italic"', margin_left="16mm", margin_right="12mm",
                 margin_top="14mm", margin_bottom="14mm",
@@ -53,11 +54,8 @@ def build_typst(tracks, font_dir, en_font="Inter", zh_font="Noto Sans CJK SC",
     # ---- COVER ----
     doc(f'#set page(fill: {cover_color})')
     doc(f'#set text(fill: {cover_text_color})')
-    doc(f'#align(center + horizon)[#v(60mm)')
-    doc(f'#set text(size: 8pt, font: "{zh_font}")')
-    doc('#circle(width: 28mm, fill: black)')
-    doc('#v(12mm)')
-    doc(f'#set text(size: 28pt, weight: "bold", font: "{en_font}")')
+    doc(f'#align(center + horizon)[#v(55mm)')
+    doc(f'#set text(size: 34pt, weight: "bold", font: "{cover_font}")')
     for line in album_title.split('\n'):
         doc(line.strip())
     doc('#v(6mm)')
@@ -164,13 +162,15 @@ def main():
     parser = argparse.ArgumentParser(description='Generate bilingual lyrics booklet PDF')
     parser.add_argument('data_module', help='Python module path exporting TRACKS list')
     parser.add_argument('--font-dir', default='/usr/share/fonts', help='Font directory path')
-    parser.add_argument('--font-name', default='Noto Serif CJK SC', help='Font family name')
     parser.add_argument('--output', '-o', default='lyrics_booklet.pdf', help='Output PDF path')
-    parser.add_argument('--en-size', default='10pt', help='English lyric font size')
-    parser.add_argument('--zh-size', default='9.5pt', help='Chinese lyric font size')
-    parser.add_argument('--title-size', default='16pt', help='Song title font size')
+    parser.add_argument('--en-size', default='12pt', help='English lyric font size')
+    parser.add_argument('--zh-size', default='11pt', help='Chinese lyric font size')
+    parser.add_argument('--title-size', default='20pt', help='Song title font size')
     parser.add_argument('--margin-left', default='16mm', help='Left margin (binding)')
     parser.add_argument('--margin-right', default='12mm', help='Right margin')
+    parser.add_argument('--en-font', default='Inter', help='English body font')
+    parser.add_argument('--zh-font', default='Noto Sans CJK SC', help='Chinese body font')
+    parser.add_argument('--cover-font', default='Playfair Display', help='Cover title decorative font')
     parser.add_argument('--album-title', default='LYRICS', help='Album title on cover')
     parser.add_argument('--album-subtitle', default='中英对照歌词集', help='Subtitle on cover')
     parser.add_argument('--artist', default='Unknown', help='Artist name')
@@ -187,11 +187,12 @@ def main():
 
     # Generate Typst
     typ_content = build_typst(
-        tracks, args.font_dir, args.font_name,
+        tracks, args.font_dir,
         en_size=args.en_size, zh_size=args.zh_size, title_size=args.title_size,
         margin_left=args.margin_left, margin_right=args.margin_right,
         album_title=args.album_title, album_subtitle=args.album_subtitle,
         artist=args.artist, label_year=args.label,
+        en_font=args.en_font, zh_font=args.zh_font, cover_font=args.cover_font,
     )
 
     import tempfile
