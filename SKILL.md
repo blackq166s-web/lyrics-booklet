@@ -94,13 +94,17 @@ TRACKS = [
 
 ## Layout Choices
 
-- Use `--preset gallery` for a polished editorial booklet.
-- Use `--preset minimal` for dense, black-and-white laser printing.
-- Use `--preset noir` for a dramatic cover with a clean white interior.
+- Use `--preset gallery` for a polished editorial booklet. **Preferred for black & white laser printing** — white background, clean layout, no toner-heavy dark fills.
+- Use `--preset minimal` for dense, black-and-white laser printing. Most toner-efficient; smallest file size.
+- Use `--preset noir` for a dramatic dark cover — **only for screen viewing or color printing**. The dark background wastes toner and looks muddy on B&W laser printers. When the user mentions laser/black-and-white/A4打印/黑白, default to `gallery` or `minimal` instead.
 - Use `--preset zine` for indie/demo booklet styling.
 - Use `--line-layout columns` for 1 to 3 languages.
 - Use `--line-layout stacked` for 4+ languages or long translations.
 - Use `--languages en,zh,ja` to reorder or export only selected languages.
+
+### ⚠️ Black & White Printing Rule
+
+When the user says 打印, laser, 黑白, or A4 print — **always use a white-background preset** (`gallery` or `minimal`). Never use `noir`. Dark backgrounds on B&W laser printers produce solid black pages that waste toner, smear, and are unreadable.
 
 ## Font Guidance
 
