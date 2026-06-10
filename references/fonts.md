@@ -8,7 +8,18 @@ The generator searches fonts in this order:
 
 ## Recommended Bundled Set
 
-Commit the core fonts for stable cover and Latin layout:
+This repository commits fonts for Chinese, Japanese, Korean, English, and Spanish layouts:
+
+| Coverage | Font |
+| --- | --- |
+| English and Spanish | Inter |
+| Cover and display typography | Playfair Display, Space Grotesk |
+| Simplified Chinese | Noto Sans SC |
+| Traditional Chinese | Noto Sans TC |
+| Japanese | Noto Sans JP |
+| Korean | Noto Sans KR |
+
+Refresh the core fonts for stable cover, English, and Spanish layout:
 
 ```bash
 python scripts/download_fonts.py --set core
@@ -44,4 +55,4 @@ The downloader uses direct links to the official Google Fonts repository:
 
 - `core` is small and suitable to commit.
 - `cjk-sc` is roughly 17 MB and is reasonable for a Chinese-first repository.
-- `cjk` is roughly 50 MB and may make installation slower.
+- `cjk` is roughly 50 MB and makes installation slower, but gives the most stable CJK out-of-box behavior.

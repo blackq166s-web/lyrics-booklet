@@ -5,14 +5,14 @@ description: Generate printer-ready A4 lyric booklets, album inserts, translatio
 
 # Lyrics Booklet
 
-Use this skill to turn structured lyric or poetry text into a print-ready A4 PDF. The generator is useful for album inserts, bilingual lyric sheets, translation collections, listening-club handouts, and small zines.
+Use this skill to turn structured lyric or poetry text into a print-ready A4 PDF. The generator is useful for album inserts, bilingual lyric sheets, translation collections, listening-club handouts, and small zines. It has first-class bundled font coverage for Chinese, Japanese, Korean, English, and Spanish.
 
 ## Workflow
 
 1. Confirm the user has the lyrics/translations or rights to use them.
 2. Create or update a Python data file containing `BOOKLET`, `LANGUAGES`, and `TRACKS`.
 3. Read `references/lyrics-format.md` when building or validating the data file.
-4. Read `references/fonts.md` when the task involves non-Latin scripts, missing glyphs, or portable GitHub packaging.
+4. Read `references/fonts.md` when the task involves CJK scripts, missing glyphs, or portable GitHub packaging.
 5. Choose a visual preset from `references/style-guide.md`.
 6. Run `scripts/generate_booklet.py`.
 7. If Typst or fonts are missing, generate `.typ` with `--no-pdf --typst-out output.typ` and tell the user what dependency is missing.
@@ -109,6 +109,7 @@ TRACKS = [
 - Use `scripts/download_fonts.py --set core --set cjk-sc` for Chinese-first projects.
 - Use `scripts/download_fonts.py --set core --set cjk` for Simplified Chinese, Traditional Chinese, Japanese, and Korean.
 - Use Google Fonts family names in data files, such as `Noto Sans SC`, `Noto Sans TC`, `Noto Sans JP`, and `Noto Sans KR`.
+- Use `Inter` for English and Spanish.
 - Pass custom font folders with repeated `--font-dir` flags when the user has their own brand fonts.
 - Keep expressive fonts for covers and readable fonts for lyric bodies.
 

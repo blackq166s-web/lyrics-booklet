@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import shutil
 import sys
+import time
 import urllib.request
 from pathlib import Path
 
@@ -23,41 +24,49 @@ FONT_FILES = {
         "group": "core",
         "filename": "Inter[opsz,wght].ttf",
         "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/inter/Inter%5Bopsz,wght%5D.ttf",
+        "license": "inter",
     },
     "inter-italic": {
         "group": "core",
         "filename": "Inter-Italic[opsz,wght].ttf",
         "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/inter/Inter-Italic%5Bopsz,wght%5D.ttf",
+        "license": "inter",
     },
     "playfair-display": {
         "group": "core",
         "filename": "PlayfairDisplay[wght].ttf",
         "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/playfairdisplay/PlayfairDisplay%5Bwght%5D.ttf",
+        "license": "playfairdisplay",
     },
     "space-grotesk": {
         "group": "core",
         "filename": "SpaceGrotesk[wght].ttf",
         "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/spacegrotesk/SpaceGrotesk%5Bwght%5D.ttf",
+        "license": "spacegrotesk",
     },
     "noto-sans-sc": {
         "group": "cjk-sc",
         "filename": "NotoSansSC[wght].ttf",
         "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanssc/NotoSansSC%5Bwght%5D.ttf",
+        "license": "notosanssc",
     },
     "noto-sans-tc": {
         "group": "cjk-tc",
         "filename": "NotoSansTC[wght].ttf",
         "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanstc/NotoSansTC%5Bwght%5D.ttf",
+        "license": "notosanstc",
     },
     "noto-sans-jp": {
         "group": "cjk-jp",
         "filename": "NotoSansJP[wght].ttf",
         "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosansjp/NotoSansJP%5Bwght%5D.ttf",
+        "license": "notosansjp",
     },
     "noto-sans-kr": {
         "group": "cjk-kr",
         "filename": "NotoSansKR[wght].ttf",
         "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/notosanskr/NotoSansKR%5Bwght%5D.ttf",
+        "license": "notosanskr",
     },
 }
 
@@ -86,7 +95,7 @@ def wanted_fonts(groups: list[str]) -> dict[str, dict[str, str]]:
     return {name: item for name, item in FONT_FILES.items() if item["group"] in expanded or name in expanded}
 
 
-def download(url: str, dest: Path, force: bool) -> None:
+def download(url: str, dest: Path, force: bool, retries: int, timeout: int) -> None:
     if dest.exists() and not force:
         print(f"exists: {dest.name}")
         return
@@ -94,8 +103,22 @@ def download(url: str, dest: Path, force: bool) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_suffix(dest.suffix + ".part")
     request = urllib.request.Request(url, headers={"User-Agent": "lyrics-booklet-font-downloader"})
-    with urllib.request.urlopen(request, timeout=120) as response, tmp.open("wb") as file_handle:
-        shutil.copyfileobj(response, file_handle)
+    last_error: Exception | None = None
+    for attempt in range(1, retries + 1):
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response, tmp.open("wb") as file_handle:
+                shutil.copyfileobj(response, file_handle)
+            last_error = None
+            break
+        except Exception as exc:
+            last_error = exc
+            if attempt == retries:
+                break
+            print(f"retry {attempt}/{retries}: {dest.name} ({exc})", file=sys.stderr)
+            time.sleep(min(2 * attempt, 10))
+
+    if last_error is not None:
+        raise last_error
     tmp.replace(dest)
     print(f"downloaded: {dest.name}")
 
@@ -127,6 +150,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--dest", default=str(DEFAULT_DEST), help="Destination font directory.")
     parser.add_argument("--force", action="store_true", help="Redownload existing files.")
+    parser.add_argument("--retries", type=int, default=4, help="Download attempts per file.")
+    parser.add_argument("--timeout", type=int, default=180, help="Per-attempt network timeout in seconds.")
     parser.add_argument("--skip-licenses", action="store_true", help="Do not download OFL license files.")
     args = parser.parse_args(argv)
 
@@ -136,12 +161,12 @@ def main(argv: list[str] | None = None) -> int:
         raise SystemExit("No fonts selected.")
 
     for item in fonts.values():
-        download(item["url"], dest / item["filename"], args.force)
+        download(item["url"], dest / item["filename"], args.force, args.retries, args.timeout)
 
     if not args.skip_licenses:
-        for family, url in LICENSE_FILES.items():
-            if any(family.replace("display", "-display") in name or family in name.replace("-", "") for name in fonts):
-                download(url, dest / f"OFL-{family}.txt", args.force)
+        license_keys = sorted({item["license"] for item in fonts.values()})
+        for family in license_keys:
+            download(LICENSE_FILES[family], dest / f"OFL-{family}.txt", args.force, args.retries, args.timeout)
 
     write_sources(dest, fonts)
     print(f"font directory: {dest}")

@@ -22,7 +22,8 @@ Use this guide when choosing the visual direction for a booklet.
 - Keep the cover/title font expressive, and keep lyric fonts boring enough to read.
 - Prefer Noto families for broad script coverage.
 - For CJK languages, use Google Fonts family names when using the downloader: `Noto Sans SC`, `Noto Sans TC`, `Noto Sans JP`, `Noto Sans KR`.
-- For Arabic, Hebrew, Thai, Hindi, and other non-Latin scripts, set each language font in `LANGUAGES`.
+- Use `Inter` for English and Spanish.
+- For Arabic, Hebrew, Thai, Hindi, and other additional scripts, set each language font in `LANGUAGES`.
 
 ## Print Notes
 

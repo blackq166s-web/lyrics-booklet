@@ -1,5 +1,7 @@
 # Lyrics Booklet
 
+[中文说明](README.zh-CN.md)
+
 Create print-ready lyric booklets from structured text data. The generator turns multilingual song lyrics into an A4 PDF with an editorial cover, clean language columns, chorus styling, page numbers, and Typst-quality typesetting.
 
 ![Lyrics Booklet preview](assets/preview.svg)
@@ -11,6 +13,7 @@ Most lyric PDFs look like exported notes. `lyrics-booklet` is for booklets that 
 ## Features
 
 - Multilingual layout with custom language order, labels, fonts, and sizes
+- First-class coverage for Chinese, Japanese, Korean, English, and Spanish
 - Backward-compatible EN/ZH tuple format
 - Four visual presets: `gallery`, `minimal`, `noir`, and `zine`
 - Two body layouts: side-by-side columns or stacked multilingual rows
@@ -29,7 +32,7 @@ python scripts/generate_booklet.py examples/album_data.py \
   --output paper-moon-booklet.pdf
 ```
 
-The repository includes a small stable font set in `assets/fonts/`. To refresh or add CJK fonts:
+The repository includes stable bundled fonts for English, Spanish, Simplified Chinese, Traditional Chinese, Japanese, and Korean:
 
 ```bash
 python scripts/download_fonts.py --set core
@@ -81,6 +84,21 @@ TRACKS = [
 
 See `references/lyrics-format.md` for the full schema.
 
+## Language Coverage
+
+The bundled font set covers:
+
+| Language group | Keys | Default font |
+| --- | --- | --- |
+| English | `en` | Inter |
+| Spanish | `es` | Inter |
+| Simplified Chinese | `zh`, `zh-cn`, `zh-hans` | Noto Sans SC |
+| Traditional Chinese | `zh-tw`, `zh-hant` | Noto Sans TC |
+| Japanese | `ja` | Noto Sans JP |
+| Korean | `ko` | Noto Sans KR |
+
+Other languages can still be used by adding an entry to `LANGUAGES` with a suitable font.
+
 ## Presets
 
 | Preset | Use it for |
@@ -98,7 +116,7 @@ See `references/lyrics-format.md` for the full schema.
 2. Common system font folders such as `C:\Windows\Fonts` and `/usr/share/fonts`
 3. Extra paths passed with `--font-dir`
 
-The downloader uses direct links to the official Google Fonts repository. The default committed set is small; CJK fonts are optional because they are much larger.
+The downloader uses direct links to the official Google Fonts repository. This repository now commits the CJK set so Chinese, Japanese, and Korean layouts work more reliably out of the box.
 
 ## Responsible Use
 

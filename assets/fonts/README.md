@@ -1,6 +1,7 @@
 # Fonts
 
 This directory is the first font search path used by `scripts/generate_booklet.py`.
+It currently includes fonts for Chinese, Japanese, Korean, English, and Spanish.
 
 Use the downloader to cache fonts here:
 
@@ -13,5 +14,5 @@ python scripts/download_fonts.py --set all
 The downloader uses the official Google Fonts repository and writes `FONT_SOURCES.md`
 after download.
 
-The repository should usually commit the small `core` set. CJK fonts are much
-larger, so decide whether to commit only the languages the project needs.
+For this repository, the CJK set is committed so Chinese, Japanese, and Korean
+booklets work more reliably out of the box.
