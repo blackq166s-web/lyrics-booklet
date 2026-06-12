@@ -1,10 +1,10 @@
-# Lyrics Booklet
+# 多语言对照歌词册生成器
 
 [English README](README.md)
 
-`lyrics-booklet` 用结构化歌词数据生成适合打印的 A4 歌词册 PDF。它适合专辑歌词内页、中英/多语言对照歌词、翻译合集、听歌会资料、同人歌词本和小型 zine。
+`lyrics-booklet` 是一个多语言对照歌词册生成器，用结构化歌词和翻译数据生成适合打印的 A4 歌词册 PDF。它适合专辑歌词内页、中英/多语言对照歌词、翻译合集、听歌会资料、同人歌词本和小型 zine。
 
-![歌词册预览](assets/preview.svg)
+![多语言对照歌词册预览](assets/preview.svg)
 
 ## 特性
 

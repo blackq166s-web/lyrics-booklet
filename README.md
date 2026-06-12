@@ -1,14 +1,14 @@
-# Lyrics Booklet
+# 多语言对照歌词册生成器 / Lyrics Booklet
 
 [中文说明](README.zh-CN.md)
 
-Create print-ready lyric booklets from structured text data. The generator turns multilingual song lyrics into an A4 PDF with an editorial cover, clean language columns, chorus styling, page numbers, and Typst-quality typesetting.
+Create print-ready multilingual lyric booklets from structured text data. The generator turns parallel lyrics and translations into an A4 PDF with an editorial cover, clean language columns, chorus styling, page numbers, and Typst-quality typesetting.
 
-![Lyrics Booklet preview](assets/preview.svg)
+![Multilingual lyric booklet preview](assets/preview.svg)
 
 ## Why It Exists
 
-Most lyric PDFs look like exported notes. `lyrics-booklet` is for booklets that feel intentional: album inserts, fan translation packs, rehearsal handouts, poetry translations, listening club zines, and private print runs.
+Most lyric PDFs look like exported notes. `lyrics-booklet` is a multilingual parallel lyrics booklet generator for work that should feel intentional: album inserts, fan translation packs, rehearsal handouts, poetry translations, listening club zines, and private print runs.
 
 ## Features
 

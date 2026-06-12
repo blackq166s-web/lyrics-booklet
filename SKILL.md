@@ -3,9 +3,9 @@ name: lyrics-booklet
 description: Generate printer-ready A4 lyric booklets, album inserts, translation zines, and poetry/song collections with Python and Typst. Use when the user wants a PDF booklet for lyrics or bilingual/multilingual text such as English-Chinese, Chinese-English, Japanese-English, Korean-English, or any multi-language side-by-side translation. Supports artistic presets, custom language fonts, Typst source export, and print-oriented layout. Trigger on requests like lyrics booklet, lyric book, album lyrics PDF, bilingual lyrics, multilingual lyrics, 歌词集, 歌词本, 打印歌词, 中英对照歌词, 多语言歌词排版.
 ---
 
-# Lyrics Booklet
+# 多语言对照歌词册生成器 / Lyrics Booklet
 
-Use this skill to turn structured lyric or poetry text into a print-ready A4 PDF. The generator is useful for album inserts, bilingual lyric sheets, translation collections, listening-club handouts, and small zines. It has first-class bundled font coverage for Chinese, Japanese, Korean, English, and Spanish.
+Use this skill to turn structured lyric or poetry text into a print-ready A4 PDF. The generator is useful for album inserts, bilingual and multilingual parallel lyric sheets, translation collections, listening-club handouts, and small zines. It has first-class bundled font coverage for Chinese, Japanese, Korean, English, and Spanish.
 
 ## Workflow
 
